@@ -13,6 +13,11 @@ export const execute = inngest.createFunction(
       model: google("gemini-2.0-flash"),
       prompt:
         "Write a vegetarian lasagna recipe for 4 people. The recipe should be easy to make and healthy, and should contain a wide variety of vegetables and herbs.",
+        experimental_telemetry: {
+          isEnabled: true,
+          recordInputs: true,
+          recordOutputs: true
+        }
     });
 
     return steps;
