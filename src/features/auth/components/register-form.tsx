@@ -43,22 +43,22 @@ export function RegisterForm() {
 
 
   const onSubmit = async (data: RegisterFormValues) => {
-   await authClient.signUp.email({
-    name: data.email,
-    email: data.email,
-    password: data.password,
-    callbackURL:"/"
-   },
-  {
-    onSuccess: () => {
-      toast.success("Account created successfully");
-      router.push("/");
+    await authClient.signUp.email({
+      name: data.email,
+      email: data.email,
+      password: data.password,
+      callbackURL: "/"
     },
-    onError: (ctx) => {
-      toast.error(ctx.error.message);
-    }
-  }
-  )
+      {
+        onSuccess: () => {
+          toast.success("Account created successfully");
+          router.push("/");
+        },
+        onError: (ctx) => {
+          toast.error(ctx.error.message);
+        }
+      }
+    )
   }
   const isPending = form.formState.isSubmitting;
 
@@ -83,6 +83,7 @@ export function RegisterForm() {
                     type="button"
                     disabled={isPending}
                   >
+                    <Image src={"/github.svg"} alt="github" height={20} width={20} />
                     Continue With GitHub
                   </Button>
                   <Button
@@ -91,6 +92,7 @@ export function RegisterForm() {
                     type="button"
                     disabled={isPending}
                   >
+                    <Image src={"/google.svg"} alt="google" height={20} width={20} />
                     Continue With Google
                   </Button>
                 </div>

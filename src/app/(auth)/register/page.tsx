@@ -5,9 +5,9 @@ import React from 'react'
 const Page = async() => {
   await requireUnAuth()
   return (
-    <div>
+   
         <RegisterForm/>
-    </div>
+   
   )
 }
 
