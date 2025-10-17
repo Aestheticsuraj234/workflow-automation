@@ -5,6 +5,7 @@ import { requireAuth } from '@/lib/auth-utils';
 import { useTRPC } from '@/trpc/client';
 import { caller } from '@/trpc/server';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import { tr } from 'date-fns/locale';
 import React from 'react'
 
 
@@ -13,22 +14,28 @@ const Page = () => {
   const queryClient = useQueryClient();
   const {data} = useQuery(trpc.getWorkflows.queryOptions());
 
+  const testAi = useMutation(trpc.testAi.mutationOptions({
+    onSuccess:(data)=>{
+      console.log("AI Response:", data);
+    }
+  }));
  
 const create = useMutation(trpc.createWorkflow.mutationOptions({
 
-
-  onSuccess:()=>{
+    onSuccess:()=>{
     queryClient.invalidateQueries(trpc.getWorkflows.queryOptions());
   }
 }))
 
   return (
     <div className='min-h-screen h-full flex flex-col items-center justify-center'>
-      
-     {JSON.stringify(data, null, 2)}
-     <Button disabled={create.isPending} onClick={()=>create.mutate()}>
-      Create Workflow
-     </Button>
+      {JSON.stringify(data, null, 2)}
+      <Button disabled={create.isPending} onClick={()=>create.mutate()}>
+        Create Workflow
+      </Button>
+      <Button disabled={testAi.isPending} onClick={()=>testAi.mutate()}>
+        Test AI
+      </Button>
     </div>
   )
 }
