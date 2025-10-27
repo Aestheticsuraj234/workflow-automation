@@ -14,7 +14,7 @@ import { useWorkflowsParams } from "./use-workflows-params";
  */
 export const useSuspenseWorkflows = () => {
   const trpc = useTRPC();
-  const [params] = useWorkflowsParams()
+  const [params] = useWorkflowsParams();
   return useSuspenseQuery(trpc.workflows.getMany.queryOptions(params));
 };
 
@@ -31,8 +31,34 @@ export const useCreateWorkflow = () => {
     trpc.workflows.create.mutationOptions({
       onSuccess(data, variables, onMutateResult, context) {
         toast.success(`Workflow  "${data.name}" created successfully`);
-       
+
         queryClient.invalidateQueries(trpc.workflows.getMany.queryOptions({}));
+      },
+      onError(error, variables, onMutateResult, context) {
+        toast.error(error.message);
+      },
+    })
+  );
+};
+
+/**
+ * Hook t remove a workflow
+ *
+ */
+
+export const useRemoveWorkflow = () => {
+  const router = useRouter();
+  const queryClient = useQueryClient();
+  const trpc = useTRPC();
+
+  return useMutation(
+    trpc.workflows.remove.mutationOptions({
+      onSuccess(data, variables, onMutateResult, context) {
+        toast.success(`Workflow "${data.name}" removed successfully`);
+        queryClient.invalidateQueries(trpc.workflows.getMany.queryOptions({}));
+        queryClient.invalidateQueries(
+          trpc.workflows.getOne.queryFilter({ id: data.id })
+        );
       },
       onError(error, variables, onMutateResult, context) {
         toast.error(error.message);
