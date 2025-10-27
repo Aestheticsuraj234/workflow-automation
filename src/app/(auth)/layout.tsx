@@ -17,8 +17,8 @@ const AuthLayout = ({ children }: { children: React.ReactNode }) => {
           WorkFlow Automation
         </Link>
 
-      </div>
       {children}
+      </div>
       </div>
   )
 }
