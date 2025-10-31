@@ -54,14 +54,14 @@ export const Editor = ({ workflowId }: { workflowId: string }) => {
         fitView
         nodeTypes={nodeComponents}
         proOptions={{
-          hideAttribution:true
+          hideAttribution: true
         }}
       >
         <Background />
         <Controls />
         <MiniMap />
         <Panel position="top-right">
-          <AddNodeButton/>
+          <AddNodeButton />
         </Panel>
       </ReactFlow>
     </div>
