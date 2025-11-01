@@ -10,6 +10,8 @@ import { ReactFlow, applyEdgeChanges, addEdge, applyNodeChanges, Node, Edge, Nod
 import '@xyflow/react/dist/style.css';
 import { nodeComponents } from "@/config/node-components";
 import { AddNodeButton } from "./add-node-button";
+import { useSetAtom } from "jotai";
+import { editorAtom } from "../store/atom";
 
 
 
@@ -26,8 +28,11 @@ export const EditorError = () => {
 export const Editor = ({ workflowId }: { workflowId: string }) => {
   const { data: workflow } = useSuspenseWorkflow(workflowId);
 
+  const setEditor = useSetAtom(editorAtom);
   const [nodes, setNodes] = useState<Node[]>(workflow.nodes);
   const [edges, setEdges] = useState<Edge[]>(workflow.edges);
+
+
 
   const onNodesChange = useCallback(
     (changes: NodeChange[]) => setNodes((nodesSnapshot) => applyNodeChanges(changes, nodesSnapshot)),
@@ -51,7 +56,14 @@ export const Editor = ({ workflowId }: { workflowId: string }) => {
         onNodesChange={onNodesChange}
         onEdgesChange={onEdgesChange}
         onConnect={onConnect}
+        snapGrid={[10 , 10]}
+        snapToGrid
         fitView
+        panOnScroll
+        panOnDrag={false}
+        selectionOnDrag
+        
+        onInit={setEditor}
         nodeTypes={nodeComponents}
         proOptions={{
           hideAttribution: true
