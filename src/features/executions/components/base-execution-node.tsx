@@ -7,13 +7,14 @@ import { memo, type ReactNode } from "react"
 import { BaseNode, BaseNodeContent } from "@/components/react-flow/base-node";
 import { BaseHandle } from "../../../components/react-flow/base-handle";
 import { WorkflowNode } from "../../../components/workflow-node";
+import { NodeStatus, NodeStatusIndicator } from "@/components/react-flow/node-status-indicator";
 
 interface BaseExecutionNodeProps extends NodeProps {
   Icon: LucideIcon | string;
   name: string;
   description?: string;
   children?: ReactNode;
-  // status?:NodeStatus;
+  status?:NodeStatus;
   onSettings?: () => void;
   onDoubleClick?: () => void;
 }
@@ -24,6 +25,7 @@ export const BaseExecutionNode = memo(({
   name,
   description,
   children,
+  status="initial",
   onDoubleClick,
   onSettings,
   ...props }: BaseExecutionNodeProps) => {
@@ -49,9 +51,10 @@ export const BaseExecutionNode = memo(({
       onDelete={handleDelete}
       onSettings={onSettings}
     >
-      {/* todo: wrap witin node status indicator */}
+     <NodeStatusIndicator status={status} variant="border">
       <BaseNode
         onDoubleClick={onDoubleClick}
+        status={status}
       >
         <BaseNodeContent>
           {
@@ -79,7 +82,7 @@ export const BaseExecutionNode = memo(({
             position={Position.Right}
           />
         </BaseNodeContent>
-      </BaseNode>
+      </BaseNode></NodeStatusIndicator>
 
     </WorkflowNode>
   )
